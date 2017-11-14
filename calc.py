@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/python3
 # -*- coding: utf-8 -*-
 
 """
@@ -139,63 +139,63 @@ class Calculator():
             return message  
     
 
-# НАЧАЛО ПРОГРАММЫ
+if __name__ == "__main__":
 
-print ("Доступные команды: \n w(work) - решить пример \n s(story) - посмотреть историю операций \n d(del) - очистить историю операций \n q(quit) - завершить программу")
-while True:
-    s = input("Введите команду: ")
-    if s is "q":
-        print ("Программа завершена")
-        break
-    elif s is "s":
-        print ("Функция 'история' еще не добавлена")
-    elif s is "d":
-        print ("Функция недоступна")
-    elif s is "w":
-        
-        operators = ("1234567890+-/*()")
-        print("Доступные операторы: +, -, *, /")
+    print ("Доступные команды: \n w(work) - решить пример \n s(story) - посмотреть историю операций \n d(del) - очистить историю операций \n q(quit) - завершить программу")
+    while True:
+        s = input("Введите команду: ")
+        if s == "q":
+            print ("Программа завершена")
+            break
+        elif s == "s":
+            print ("Функция 'история' еще не добавлена")
+        elif s == "d":
+            print ("Функция недоступна")
+        elif s == "w":
+            
+            operators = ("1234567890+-/*()")
+            print("Доступные операторы: +, -, *, /")
 
-        '''
-        Проверяет правильность ввода
-        входного выражения
-        '''
+            '''
+            Проверяет правильность ввода
+            входного выражения
+            '''
 
-        while True:
-            controlPoint = True
-            inputString = str(input("Введите Ваш пример: "))
-            for element in inputString:
-                if element in operators:
+            while True:
+                controlPoint = True
+                inputString = str(input("Введите Ваш пример: "))
+                for element in inputString:
+                    if element in operators:
+                        continue
+                    else:
+                        controlPoint = False
+                        print("Недопустимые символы")
+                        break
+                if controlPoint is False:
+                    continue
+                elif not inputString:
+                    print("Вы ничего не ввели")
                     continue
                 else:
-                    controlPoint = False
-                    print("Недопустимые символы")
                     break
-            if controlPoint is False:
-                continue
-            elif not inputString:
-                print("Вы ничего не ввели")
-                continue
-            else:
-                break
 
 
-        equation = inputString
-        calc = Calculator()
+            equation = inputString
+            calc = Calculator()
 
-        #Вызов функции для преобразования строки в список
-        equationList = calc.stringToList(equation)
+            #Вызов функции для преобразования строки в список
+            equationList = calc.stringToList(equation)
 
-        #Вызов функции, которая переводит выражение в постфиксную запись
-        polishNotation = calc.infixToPostfix(equationList)
+            #Вызов функции, которая переводит выражение в постфиксную запись
+            polishNotation = calc.infixToPostfix(equationList)
 
-        #Вызов функции, которая возвращает результат вычисленного выражения 
-        answer = calc.reversedPolishNotation(polishNotation)
+            #Вызов функции, которая возвращает результат вычисленного выражения 
+            answer = calc.reversedPolishNotation(polishNotation)
 
-        #Вывод ответа или сообщения об ошибке
-        print(" Ответ: %s \n" % (answer))
-    else:
-        print ("Неверная команда")
+            #Вывод ответа или сообщения об ошибке
+            print(" Ответ: %s \n" % (answer))
+        else:
+            print ("Неверная команда")
     
 
 
