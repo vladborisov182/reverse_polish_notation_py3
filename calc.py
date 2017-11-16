@@ -1,6 +1,9 @@
 #!/usr/bin/python3
 # -*- coding: utf-8 -*-
 
+import historyModule
+
+
 """
 Программа для вычисления выражений записанных в виде строки
 reversedPolishNotation - главная функция вычисляющая выражение
@@ -159,17 +162,20 @@ class Calculator():
 
 
 if __name__ == "__main__":
+    
+    calc = Calculator()
+    history = historyModule.OperationsHistory()
 
-    print ("Доступные команды: \n w(work) - решить пример \n s(story) - посмотреть историю операций \n d(del) - очистить историю операций \n q(quit) - завершить программу")
+    print ("Доступные команды: \n w(work) - решить пример \n h(history) - посмотреть историю операций \n d(del) - очистить историю операций \n q(quit) - завершить программу")
     while True:
         s = input("Введите команду: ")
         if s == "q":
             print ("Программа завершена")
             break
-        elif s == "s":
-            print ("Функция 'история' еще не добавлена")
+        elif s == "h":
+            history.read_history()
         elif s == "d":
-            print ("Функция недоступна")
+            history.del_history()
         elif s == "w":
             
             operators = ("1234567890+-/*()")
@@ -200,7 +206,7 @@ if __name__ == "__main__":
 
 
             expression = inputString
-            calc = Calculator()
+            
 
             #Вызов функции для преобразования строки в список
             expressionList = calc.convertInputToList(expression)
@@ -208,8 +214,11 @@ if __name__ == "__main__":
             #Вызов функции, которая возвращает результат вычисленного выражения 
             answer = calc.calculation(expressionList)
 
+            history.add_history(expression, answer)
+
             #Вывод ответа или сообщения об ошибке
             print(" Ответ: %s \n" % (answer))
+        
         else:
             print ("Неверная команда")
     
