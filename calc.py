@@ -8,7 +8,7 @@ reversedPolishNotation - главная функция вычисляющая в
 
 class Calculator():
     
-    def stringToList(self, string):
+    def convertInputToList(self, string):
     
         '''
         Записывает входную строку 
@@ -31,113 +31,132 @@ class Calculator():
             list.append(s)
         return list
 
-    def infixToPostfix(self, equationList):
+    def calculation(self, expressionInfix):
         
         '''
-        Преобразовывает инфиксную запись
-        выражения в постфиксную
+        Включает в себя функции для преобразования выражения
+        и его решения
         '''
 
-        # Приоритеты операторов:
-        operatorsPriority = {
-        "*" : 2,
-        "/" : 2,
-        "+" : 1,
-        "-" : 1,
-        }
-        
-        operators = ["+", "-", "/", "*"]
 
-        stack = []
-        outputArray = []
+        def convertInfixToPostfix(expressionInfix):
+            
+            '''
+            Преобразовывает инфиксную запись
+            выражения в постфиксную
+            '''
 
-        for i in range(0, len(equationList)):
-            try:
-                x = int(equationList[i])
-                outputArray.append(equationList[i])
-            except:
-                if equationList[i] is "(":
-                    stack.append(equationList[i])
-                elif equationList[i] is ")":
-                    while True:
+            # Приоритеты операторов:
+            operatorsPriority = {
+            "*" : 2,
+            "/" : 2,
+            "+" : 1,
+            "-" : 1,
+            }
+            
+            operators = ["+", "-", "/", "*"]
+
+            stack = []
+            outputArray = []
+
+            for i in range(0, len(expressionInfix)):
+                try:
+                    x = int(expressionInfix[i])
+                    outputArray.append(expressionInfix[i])
+                except:
+                    if expressionInfix[i] is "(":
+                        stack.append(expressionInfix[i])
+                    elif expressionInfix[i] is ")":
+                        while True:
+                            try:
+                                oper = stack.pop()
+                                if oper in operators:
+                                    outputArray.append(oper)
+                                else:
+                                    try:
+                                        oper =  stack.pop()
+                                        if oper in operators:
+                                            outputArray.append(oper)
+                                    except:
+                                        break
+                            except:
+                                break
+                    elif expressionInfix[i] in operators:
                         try:
-                            oper = stack.pop()
-                            if oper in operators:
-                                outputArray.append(oper)
+                            x = stack.pop()
+                            stack.append(x)
+                            if (operatorsPriority[expressionInfix[i]] == operatorsPriority[stack[-1]]):
+                                outputArray.append(stack.pop())
+                                stack.append(expressionInfix[i])
+                            elif operatorsPriority[expressionInfix[i]] > operatorsPriority[stack[-1]]:
+                                stack.append(expressionInfix[i])
+                            elif operatorsPriority[expressionInfix[i]] < operatorsPriority[stack[-1]]:
+                                outputArray.append(stack.pop())
+                                stack.append(expressionInfix[i])
+                            elif x in "()":
+                                stack.append(expressionInfix[i])
                             else:
-                                try:
-                                    oper =  stack.pop()
-                                    if oper in operators:
-                                        outputArray.append(oper)
-                                except:
-                                    break
+                                outputArray.append(expressionInfix[i])
                         except:
-                            break
-                elif equationList[i] in operators:
-                    try:
-                        x = stack.pop()
-                        stack.append(x)
-                        if (operatorsPriority[equationList[i]] == operatorsPriority[stack[-1]]):
-                            outputArray.append(stack.pop())
-                            stack.append(equationList[i])
-                        elif operatorsPriority[equationList[i]] > operatorsPriority[stack[-1]]:
-                            stack.append(equationList[i])
-                        elif operatorsPriority[equationList[i]] < operatorsPriority[stack[-1]]:
-                            outputArray.append(stack.pop())
-                            stack.append(equationList[i])
-                        elif x in "()":
-                            stack.append(equationList[i])
-                        else:
-                            outputArray.append(equationList[i])
-                    except:
-                        stack.append(equationList[i])
-        while stack:
-            outputArray.append(stack.pop())
-        return outputArray
-    
-    def reversedPolishNotation(self, expr):
+                            stack.append(expressionInfix[i])
+            while stack:
+                outputArray.append(stack.pop())
+            return outputArray
         
-        """
-        Возвращает результат вычисленного выражения записанного в виде обратной
-        польской нотации
-        expr = list
-        """
+        def reversedPolishNotation(expr):
+            
+            """
+            Возвращает результат вычисленного выражения записанного в виде обратной
+            польской нотации
+            expr = list
+            """
 
-        operators = {
-        '+': float.__add__, 
-        '-': float.__sub__,
-        '*': float.__mul__,
-        '/': float.__truediv__,
-    }   
-        stack = [] 
+            operators = {
+            '+': float.__add__, 
+            '-': float.__sub__,
+            '*': float.__mul__,
+            '/': float.__truediv__,
+            }   
+            stack = [] 
 
-        for element in expr:
-            try:
-                element = float(element)
-                stack.append(element)
-            except ValueError:
-                if element not in operators: 
-                    continue
+            for element in expr:
                 try:
-                    oper2 = stack.pop()
-                    oper1 = stack.pop()
-                except IndexError:
-                    message = "Мало операндов"
-                    return message
-                try:
-                    oper = operators[element](oper1, oper2)
-                except ZeroDivisionError:
-                    message = "Нельзя делить на 0"
-                    return message
-                stack.append(oper)
+                    element = float(element)
+                    stack.append(element)
+                except ValueError:
+                    if element not in operators: 
+                        continue
+                    try:
+                        oper2 = stack.pop()
+                        oper1 = stack.pop()
+                    except IndexError:
+                        message = "Мало операндов"
+                        return message
+                    try:
+                        oper = operators[element](oper1, oper2)
+                    except ZeroDivisionError:
+                        message = "Деление на ноль"
+                        return message
+                    stack.append(oper)
 
-        if len(stack) != 1:
-            message = "Много операндов"
-            return message
-        else:
-            message = stack.pop()
-            return message  
+            if len(stack) != 1:
+                message = "Много операндов"
+                return message
+            else:
+                message = stack.pop()
+                return message 
+        
     
+        #Вызов функции для преобразования инфиксной записи выражения в постфиксную
+        polishNotation = convertInfixToPostfix(expressionInfix)
+
+
+        # Вызов функции для решения выражения
+        answer = reversedPolishNotation(polishNotation)
+
+        #Возвращаем ответ или сообщение об ошибке
+        return answer
+
 
 if __name__ == "__main__":
 
@@ -180,17 +199,14 @@ if __name__ == "__main__":
                     break
 
 
-            equation = inputString
+            expression = inputString
             calc = Calculator()
 
             #Вызов функции для преобразования строки в список
-            equationList = calc.stringToList(equation)
-
-            #Вызов функции, которая переводит выражение в постфиксную запись
-            polishNotation = calc.infixToPostfix(equationList)
+            expressionList = calc.convertInputToList(expression)
 
             #Вызов функции, которая возвращает результат вычисленного выражения 
-            answer = calc.reversedPolishNotation(polishNotation)
+            answer = calc.calculation(expressionList)
 
             #Вывод ответа или сообщения об ошибке
             print(" Ответ: %s \n" % (answer))

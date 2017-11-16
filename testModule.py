@@ -4,60 +4,57 @@
 import unittest
 import calc
  
-class stringToListTest(unittest.TestCase):
+class convertInputToListTest(unittest.TestCase):
     
     def test_oneElement(self):
-        self.assertEqual(calc.Calculator.stringToList(self, "2"), ["2"])
+        self.assertEqual(calc.Calculator.convertInputToList(self, "2"), ["2"])
 
     def test_threeElements(self):
-        self.assertEqual(calc.Calculator.stringToList(self, "2 + 2"), ["2", "+", "2"])
+        self.assertEqual(calc.Calculator.convertInputToList(self, "2+2"), ["2", "+", "2"])
     
     def test_bigNumber(self):
-        self.assertEqual(calc.Calculator.stringToList(self, "2007"), ["2007"])
+        self.assertEqual(calc.Calculator.convertInputToList(self, "2007"), ["2007"])
     
     def test_twoBigNumbers(self):
-        self.assertEqual(calc.Calculator.stringToList(self, "2007+30"), ["2007", "+", "30"])
+        self.assertEqual(calc.Calculator.convertInputToList(self, "2007+30"), ["2007", "+", "30"])
     
     def test_fullEquation(self):
-        self.assertEqual(calc.Calculator.stringToList(self, "2+2*2/(30-5)+2"), ["2", "+", "2", "*", "2", "/", "(", "30", "-", "5", ")", "+", "2", ])
+        self.assertEqual(calc.Calculator.convertInputToList(self, "2+2*2/(30-5)+2"), ["2", "+", "2", "*", "2", "/", "(", "30", "-", "5", ")", "+", "2"])
 
 
-class infixToPostfixTest(unittest.TestCase):
+class calculationTest(unittest.TestCase):
     
     def test_oneElement(self):
-        self.assertEqual(calc.Calculator.infixToPostfix(self, ["2"]), ["2"])
+        self.assertEqual(calc.Calculator.calculation(self, "2"), 2.0)
 
     def test_threeElements(self):
-        self.assertEqual(calc.Calculator.infixToPostfix(self, ["2", "+", "2"]), ["2", "2", "+"])
+        self.assertEqual(calc.Calculator.calculation(self, ["2", "+", "2"]), 4.0)
     
-    def test_bracketedEquation(self):
-        self.assertEqual(calc.Calculator.infixToPostfix(self, ["(", "2", "+", "2", ")", "*", "10"]), ["2", "2", "+", "10", "*"])
+    def test_bigNumber(self):
+        self.assertEqual(calc.Calculator.calculation(self, ["2007"]), 2007.0)
     
-    def test_extraParentheses(self):
-        self.assertEqual(calc.Calculator.infixToPostfix(self, ["2", "+", "(", "(", "2", "*", "2", ")"]), ["2", "2", "2", "*", "+"])
+    def test_twoBigNumbers(self):
+        self.assertEqual(calc.Calculator.calculation(self, ["2007", "+", "30"]), 2037.0)
     
-    def test_permissibleError(self):
-        self.assertEqual(calc.Calculator.infixToPostfix(self, ["2", "+", "2", "*", "2", "+", "("]), ["2", "2", "2", "*", "(", "+", "+"])
-
-
-class reversedPolishNotationTest(unittest.TestCase):
+    def test_fullEquation(self):
+        self.assertEqual(calc.Calculator.calculation(self, ["2", "+", "2", "*", "2", "/", "(", "30", "-", "5", ")", "+", "2"]), 4.16)
     
-    def test_oneElement(self):
-        self.assertEqual(calc.Calculator.reversedPolishNotation(self, ["2"]), 2.0)
-    
-    def test_oneOperator(self):
-        self.assertEqual(calc.Calculator.reversedPolishNotation(self, ["2", "+"]), "Мало операндов")
+    def test_fewOperands(self):
+        self.assertEqual(calc.Calculator.calculation(self, ["2", "+", "+"]), "Мало операндов")
 
     def test_manyOperands(self):
-        self.assertEqual(calc.Calculator.reversedPolishNotation(self, ["2", "2", "2", "+"]), "Много операндов")
+        self.assertEqual(calc.Calculator.calculation(self, ["2", "+", "2", "(", "2", ")"]), "Много операндов")
+    
+    def test_openParenthesis(self):
+        self.assertEqual(calc.Calculator.calculation(self, ["2", "+", "2", "(", "(", "("]), 4.0)
 
-    def test_fullEquation(self):
-        self.assertEqual(calc.Calculator.reversedPolishNotation(self, ["2", "10", "+", "4", "5", "/", "3", "+", "-"]), 8.2)
+    def test_closedParenthesis(self):
+        self.assertEqual(calc.Calculator.calculation(self, ["2", "+", "2", ")", ")", ")"]), 4.0)
 
-    def test_permissibleError(self):
-        self.assertEqual(calc.Calculator.reversedPolishNotation(self, ["2", "2", "2", "*", "(", "+", "+"]), "Мало операндов")
+    def test_divisionByZero(self):
+        self.assertEqual(calc.Calculator.calculation(self, ["2", "/", "0"]), "Деление на ноль")
 
-        
+
 
 if __name__ == '__main__':
     unittest.main()
