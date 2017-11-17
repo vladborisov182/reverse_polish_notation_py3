@@ -96,8 +96,6 @@ class Calculator():
                             elif operatorsPriority[expressionInfix[i]] < operatorsPriority[stack[-1]]:
                                 outputArray.append(stack.pop())
                                 stack.append(expressionInfix[i])
-                            elif x in "()":
-                                stack.append(expressionInfix[i])
                             else:
                                 outputArray.append(expressionInfix[i])
                         except:

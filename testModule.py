@@ -54,7 +54,8 @@ class calculationTest(unittest.TestCase):
     def test_divisionByZero(self):
         self.assertEqual(calc.Calculator.calculation(self, ["2", "/", "0"]), "Деление на ноль")
 
-
+    def test_operatorsPriority(self):
+        self.assertEqual(calc.Calculator.calculation(self, ["2", "*", "1", "+", "1"]), 3.0)
 
 if __name__ == '__main__':
     unittest.main()
