@@ -161,8 +161,8 @@ class Calculator():
         return answer
 
 
-if __name__ == "__main__":
-    
+def main():
+        
     calc = Calculator()
     history = historyModule.OperationsHistory()
 
@@ -222,7 +222,8 @@ if __name__ == "__main__":
         else:
             print ("Неверная команда")
     
-
+if __name__ == '__main__':
+    main()
 
 
 

@@ -1,4 +1,8 @@
+#!/usr/bin/python3
+# -*- coding: utf-8 -*-
+
 import csv
+import calc
 
 class OperationsHistory():
     
@@ -25,3 +29,7 @@ class OperationsHistory():
                 print ("История операций:")
                 for expr in data_read:
                     print (expr)
+
+
+if __name__ == '__main__':
+    calc.main()
