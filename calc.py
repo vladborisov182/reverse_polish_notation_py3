@@ -11,7 +11,8 @@ reversedPolishNotation - главная функция вычисляющая в
 
 class Calculator():
     
-    def convertInputToList(self, string):
+    @staticmethod
+    def convertInputToList(string):
     
         '''
         Записывает входную строку 

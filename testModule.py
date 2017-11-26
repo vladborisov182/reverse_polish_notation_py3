@@ -7,19 +7,19 @@ import calc
 class convertInputToListTest(unittest.TestCase):
     
     def test_oneElement(self):
-        self.assertEqual(calc.Calculator.convertInputToList(self, "2"), ["2"])
+        self.assertEqual(calc.Calculator.convertInputToList("2"), ["2"])
 
     def test_threeElements(self):
-        self.assertEqual(calc.Calculator.convertInputToList(self, "2+2"), ["2", "+", "2"])
+        self.assertEqual(calc.Calculator.convertInputToList("2+2"), ["2", "+", "2"])
     
     def test_bigNumber(self):
-        self.assertEqual(calc.Calculator.convertInputToList(self, "2007"), ["2007"])
+        self.assertEqual(calc.Calculator.convertInputToList("2007"), ["2007"])
     
     def test_twoBigNumbers(self):
-        self.assertEqual(calc.Calculator.convertInputToList(self, "2007+30"), ["2007", "+", "30"])
+        self.assertEqual(calc.Calculator.convertInputToList("2007+30"), ["2007", "+", "30"])
     
     def test_fullEquation(self):
-        self.assertEqual(calc.Calculator.convertInputToList(self, "2+2*2/(30-5)+2"), ["2", "+", "2", "*", "2", "/", "(", "30", "-", "5", ")", "+", "2"])
+        self.assertEqual(calc.Calculator.convertInputToList("2+2*2/(30-5)+2"), ["2", "+", "2", "*", "2", "/", "(", "30", "-", "5", ")", "+", "2"])
 
 
 class calculationTest(unittest.TestCase):
